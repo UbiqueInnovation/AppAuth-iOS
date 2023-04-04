@@ -560,20 +560,6 @@ NS_ASSUME_NONNULL_BEGIN
       // OpenID Connect Core Section 3.1.3.7. rule #1
       // Not supported: AppAuth does not support JWT encryption.
 
-      // OpenID Connect Core Section 3.1.3.7. rule #2
-      // Validates that the issuer in the ID Token matches that of the discovery document.
-      NSURL *issuer = tokenResponse.request.configuration.issuer;
-      if (issuer && ![idToken.issuer isEqual:issuer]) {
-        NSError *invalidIDToken =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
-                           underlyingError:nil
-                               description:@"Issuer mismatch"];
-        dispatch_async(dispatch_get_main_queue(), ^{
-          callback(nil, invalidIDToken);
-        });
-        return;
-      }
-
       // OpenID Connect Core Section 3.1.3.7. rule #3 & Section 2 azp Claim
       // Validates that the aud (audience) Claim contains the client ID, or that the azp
       // (authorized party) Claim matches the client ID.
